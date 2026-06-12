@@ -21,10 +21,9 @@
       --white: #ffffff;
       --shadow-sm: 0 8px 24px rgba(62,59,55,0.08);
       --shadow-lg: 0 20px 50px rgba(62,59,55,0.14);
-      --radius: 20px;
-      --radius-sm: 12px;
       --container: 1200px;
     }
+
     * { box-sizing: border-box; }
     html { scroll-behavior: smooth; }
     body {
@@ -34,181 +33,587 @@
       color: var(--text);
       -webkit-font-smoothing: antialiased;
       text-rendering: optimizeLegibility;
+      overflow-x: hidden;
     }
+
     img { max-width: 100%; display: block; }
     a { color: inherit; text-decoration: none; }
     button { font: inherit; }
     .font-serif { font-family: 'Cormorant Garamond', Georgia, serif; }
     .container { width: min(calc(100% - 32px), var(--container)); margin: 0 auto; }
+    .hidden { display: none !important; }
+
     .topbar {
-      position: sticky; top: 0; z-index: 100;
+      position: sticky;
+      top: 0;
+      z-index: 100;
       background: rgba(250,247,242,0.92);
       backdrop-filter: blur(10px);
       border-bottom: 1px solid var(--border);
     }
+
     .topbar-inner {
-      min-height: 72px; display: flex; align-items: center; justify-content: space-between; gap: 16px;
+      min-height: 72px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 16px;
+      padding: 10px 0;
     }
-    .brand { display: flex; align-items: center; gap: 10px; min-width: 0; }
+
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      min-width: 0;
+    }
+
     .brand-title {
-      font-size: 20px; letter-spacing: .14em; text-transform: uppercase; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+      font-size: 18px;
+      letter-spacing: .12em;
+      text-transform: uppercase;
+      line-height: 1.2;
     }
+
     .icon-heart { color: var(--gold); }
+
     .audio-btn {
-      display: inline-flex; align-items: center; gap: 10px; border: 1px solid rgba(197,160,89,.35);
-      color: var(--gold); background: transparent; border-radius: 999px; padding: 12px 16px; cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+      border: 1px solid rgba(197,160,89,.35);
+      color: var(--gold);
+      background: transparent;
+      border-radius: 999px;
+      padding: 12px 16px;
+      cursor: pointer;
       transition: .25s ease;
+      min-height: 46px;
     }
-    .audio-btn:hover { background: var(--gold); color: white; }
-    .audio-btn span { font-size: 11px; font-weight: 600; letter-spacing: .08em; text-transform: uppercase; }
+
+    .audio-btn:hover,
+    .audio-btn:active {
+      background: var(--gold);
+      color: white;
+    }
+
+    .audio-btn span {
+      font-size: 11px;
+      font-weight: 600;
+      letter-spacing: .08em;
+      text-transform: uppercase;
+    }
+
+    .autoplay-tip {
+      position: fixed;
+      left: 50%;
+      bottom: 18px;
+      transform: translateX(-50%);
+      z-index: 120;
+      background: rgba(62,59,55,.92);
+      color: #fff;
+      padding: 12px 16px;
+      border-radius: 999px;
+      font-size: 11px;
+      letter-spacing: .08em;
+      text-transform: uppercase;
+      box-shadow: var(--shadow-lg);
+      text-align: center;
+      max-width: calc(100vw - 24px);
+    }
+
     .hero {
-      position: relative; min-height: 85vh; display: flex; align-items: center; justify-content: center; overflow: hidden;
-      text-align: center; padding: 56px 0 90px;
+      position: relative;
+      min-height: 88svh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      overflow: hidden;
+      text-align: center;
+      padding: 42px 0 90px;
     }
+
     .blur-a, .blur-b {
-      position: absolute; border-radius: 999px; filter: blur(60px); pointer-events: none;
+      position: absolute;
+      border-radius: 999px;
+      filter: blur(60px);
+      pointer-events: none;
     }
-    .blur-a { width: 280px; height: 280px; background: #E8DFD8; top: 40px; left: 40px; opacity: .8; }
-    .blur-b { width: 360px; height: 360px; background: rgba(197,160,89,.12); right: 20px; bottom: 20px; }
-    .eyebrow { color: var(--gold); font-size: 12px; font-weight: 700; letter-spacing: .3em; text-transform: uppercase; }
+
+    .blur-a {
+      width: 220px;
+      height: 220px;
+      background: #E8DFD8;
+      top: 20px;
+      left: -30px;
+      opacity: .8;
+    }
+
+    .blur-b {
+      width: 260px;
+      height: 260px;
+      background: rgba(197,160,89,.12);
+      right: -40px;
+      bottom: 30px;
+    }
+
+    .eyebrow {
+      color: var(--gold);
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: .25em;
+      text-transform: uppercase;
+    }
+
     .hero h1 {
-      margin: 18px 0 0; font-size: clamp(52px, 8vw, 112px); line-height: .95; font-weight: 300;
+      margin: 18px 0 0;
+      font-size: clamp(48px, 13vw, 112px);
+      line-height: .95;
+      font-weight: 300;
     }
-    .hero h1 em { color: var(--gold); font-style: italic; font-weight: 400; }
-    .divider { width: 64px; height: 1px; background: var(--gold); margin: 26px auto; }
+
+    .hero h1 em {
+      color: var(--gold);
+      font-style: italic;
+      font-weight: 400;
+    }
+
+    .divider {
+      width: 64px;
+      height: 1px;
+      background: var(--gold);
+      margin: 22px auto;
+    }
+
     .hero-quote {
-      max-width: 700px; margin: 0 auto; font-size: clamp(26px, 2.6vw, 34px); line-height: 1.35; color: #7b736a; font-weight: 300;
+      max-width: 760px;
+      margin: 0 auto;
+      font-size: clamp(22px, 6vw, 34px);
+      line-height: 1.35;
+      color: #7b736a;
+      font-weight: 300;
     }
+
     .cta {
-      display: inline-flex; align-items: center; gap: 12px; margin-top: 34px; background: var(--text); color: var(--bg);
-      padding: 16px 26px; border-radius: 999px; font-size: 12px; font-weight: 600; text-transform: uppercase; letter-spacing: .18em;
-      transition: .25s ease; box-shadow: var(--shadow-sm);
+      display: inline-flex;
+      align-items: center;
+      gap: 12px;
+      margin-top: 30px;
+      background: var(--text);
+      color: var(--bg);
+      padding: 16px 24px;
+      border-radius: 999px;
+      font-size: 12px;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: .18em;
+      transition: .25s ease;
+      box-shadow: var(--shadow-sm);
+      min-height: 50px;
     }
-    .cta:hover { transform: translateY(-2px); background: var(--gold); }
+
+    .cta:hover,
+    .cta:active {
+      transform: translateY(-2px);
+      background: var(--gold);
+    }
+
     .scroll-indicator {
-      position: absolute; left: 50%; bottom: 24px; transform: translateX(-50%); display: flex; flex-direction: column; align-items: center; gap: 6px;
-      color: var(--muted); font-size: 10px; text-transform: uppercase; letter-spacing: .25em;
+      position: absolute;
+      left: 50%;
+      bottom: 22px;
+      transform: translateX(-50%);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 6px;
+      color: var(--muted);
+      font-size: 10px;
+      text-transform: uppercase;
+      letter-spacing: .25em;
       animation: bob 1.8s ease-in-out infinite;
     }
-    .scroll-indicator .line { width: 1px; height: 26px; background: var(--gold); }
-    @keyframes bob { 0%,100% { transform: translateX(-50%) translateY(0);} 50% { transform: translateX(-50%) translateY(6px);} }
-    section { padding: 88px 0; }
-    .section-head { text-align: center; max-width: 760px; margin: 0 auto 56px; }
-    .section-head h2 { font-size: clamp(40px, 5vw, 58px); margin: 6px 0 10px; font-weight: 300; }
-    .section-head p { margin: 0 auto; color: #736a61; font-size: 20px; line-height: 1.5; font-style: italic; font-family: 'Cormorant Garamond', Georgia, serif; }
+
+    .scroll-indicator .line {
+      width: 1px;
+      height: 26px;
+      background: var(--gold);
+    }
+
+    @keyframes bob {
+      0%,100% { transform: translateX(-50%) translateY(0); }
+      50% { transform: translateX(-50%) translateY(6px); }
+    }
+
+    section { padding: 72px 0; }
+
+    .section-head {
+      text-align: center;
+      max-width: 760px;
+      margin: 0 auto 38px;
+    }
+
+    .section-head h2 {
+      font-size: clamp(36px, 9vw, 58px);
+      margin: 6px 0 10px;
+      font-weight: 300;
+    }
+
+    .section-head p {
+      margin: 0 auto;
+      color: #736a61;
+      font-size: clamp(22px, 5.4vw, 28px);
+      line-height: 1.45;
+      font-style: italic;
+      font-family: 'Cormorant Garamond', Georgia, serif;
+    }
+
     .photo-grid {
-      display: grid; grid-template-columns: repeat(3, 1fr); gap: 24px;
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 16px;
     }
+
     .photo-card {
-      position: relative; aspect-ratio: 3 / 4; overflow: hidden; border-radius: 16px; border: 1px solid var(--border); box-shadow: var(--shadow-sm); background: #efe8df;
+      position: relative;
+      aspect-ratio: 3 / 4;
+      overflow: hidden;
+      border-radius: 16px;
+      border: 1px solid var(--border);
+      box-shadow: var(--shadow-sm);
+      background: #efe8df;
     }
-    .photo-card img { width: 100%; height: 100%; object-fit: cover; transition: transform .5s ease; }
+
+    .photo-card img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      transition: transform .5s ease;
+    }
+
     .photo-card:hover img { transform: scale(1.04); }
-    .reveal {
-      background: rgba(232,223,216,.4);
-    }
+
+    .reveal { background: rgba(232,223,216,.4); }
     .reveal-wrap { max-width: 860px; margin: 0 auto; text-align: center; }
+
     .envelope {
-      position: relative; background: var(--white); border: 2px solid var(--border); border-radius: 24px; padding: 48px 32px; box-shadow: var(--shadow-lg);
-      cursor: pointer; transition: .35s ease; max-width: 620px; margin: 0 auto;
+      position: relative;
+      background: var(--white);
+      border: 2px solid var(--border);
+      border-radius: 24px;
+      padding: 34px 20px;
+      box-shadow: var(--shadow-lg);
+      cursor: pointer;
+      transition: .35s ease;
+      max-width: 620px;
+      margin: 0 auto;
     }
-    .envelope:hover { transform: translateY(-6px); }
+
+    .envelope:hover,
+    .envelope:active {
+      transform: translateY(-4px);
+    }
+
     .seal {
-      position: relative; width: 88px; height: 88px; border-radius: 999px; background: var(--text); color: var(--bg);
-      display: grid; place-items: center; margin: 0 auto 22px; box-shadow: var(--shadow-sm);
+      position: relative;
+      width: 82px;
+      height: 82px;
+      border-radius: 999px;
+      background: var(--text);
+      color: var(--bg);
+      display: grid;
+      place-items: center;
+      margin: 0 auto 18px;
+      box-shadow: var(--shadow-sm);
     }
+
     .seal::after {
-      content: ''; position: absolute; inset: 6px; border-radius: 999px; border: 1px solid rgba(197,160,89,.35);
+      content: '';
+      position: absolute;
+      inset: 6px;
+      border-radius: 999px;
+      border: 1px solid rgba(197,160,89,.35);
     }
+
     .envelope p { margin: 0; }
-    .envelope .to { font-size: 34px; font-style: italic; }
-    .envelope .hint { margin-top: 10px; color: #8c8276; font-size: 12px; text-transform: uppercase; letter-spacing: .15em; }
+    .envelope .to { font-size: clamp(30px, 8vw, 36px); font-style: italic; }
+    .envelope .hint {
+      margin-top: 10px;
+      color: #8c8276;
+      font-size: 11px;
+      text-transform: uppercase;
+      letter-spacing: .15em;
+    }
+
     .letter {
-      display: none; text-align: left; background: var(--bg); border: 2px solid rgba(197,160,89,.3); border-radius: 24px; padding: 34px; box-shadow: var(--shadow-lg); max-width: 760px; margin: 0 auto;
+      display: none;
+      text-align: left;
+      background: var(--bg);
+      border: 2px solid rgba(197,160,89,.3);
+      border-radius: 24px;
+      padding: 24px 18px;
+      box-shadow: var(--shadow-lg);
+      max-width: 760px;
+      margin: 0 auto;
       position: relative;
     }
+
     .letter.open { display: block; }
+
     .letter-close {
-      position: absolute; top: 16px; right: 16px; background: transparent; border: none; color: var(--muted); text-transform: uppercase; letter-spacing: .1em; font-size: 11px; cursor: pointer;
+      position: absolute;
+      top: 14px;
+      right: 14px;
+      background: transparent;
+      border: none;
+      color: var(--muted);
+      text-transform: uppercase;
+      letter-spacing: .1em;
+      font-size: 10px;
+      cursor: pointer;
+      min-height: 44px;
+      min-width: 44px;
     }
+
     .letter-top {
-      display: flex; align-items: center; justify-content: space-between; gap: 16px; border-bottom: 1px solid var(--border); padding-bottom: 14px; margin-bottom: 24px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 16px;
+      border-bottom: 1px solid var(--border);
+      padding-bottom: 14px;
+      margin-bottom: 20px;
+      padding-right: 40px;
     }
+
     .letter-body {
-      white-space: pre-line; font-family: 'Cormorant Garamond', Georgia, serif; font-size: clamp(28px, 2.6vw, 34px); line-height: 1.45; font-style: italic; font-weight: 300;
+      white-space: pre-line;
+      font-family: 'Cormorant Garamond', Georgia, serif;
+      font-size: clamp(25px, 6.4vw, 34px);
+      line-height: 1.42;
+      font-style: italic;
+      font-weight: 300;
     }
-    .voucher-block { margin-top: 32px; padding-top: 28px; border-top: 1px solid var(--border); }
-    .voucher-label { display: block; font-size: 11px; font-weight: 700; letter-spacing: .12em; color: #9c948c; text-transform: uppercase; margin-bottom: 14px; }
+
+    .voucher-block {
+      margin-top: 28px;
+      padding-top: 24px;
+      border-top: 1px solid var(--border);
+    }
+
+    .voucher-label {
+      display: block;
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: .12em;
+      color: #9c948c;
+      text-transform: uppercase;
+      margin-bottom: 14px;
+    }
+
     .voucher {
-      max-width: 360px; background: #fff; border: 2px solid rgba(197,160,89,.3); border-radius: 20px; padding: 22px; box-shadow: var(--shadow-sm);
+      max-width: 100%;
+      background: #fff;
+      border: 2px solid rgba(197,160,89,.3);
+      border-radius: 20px;
+      padding: 20px;
+      box-shadow: var(--shadow-sm);
     }
-    .voucher-title { font-size: 18px; font-weight: 700; text-transform: uppercase; letter-spacing: .05em; color: #5c554f; }
+
+    .voucher-title {
+      font-size: 18px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: .05em;
+      color: #5c554f;
+    }
+
     .voucher-meta {
-      display: flex; justify-content: space-between; gap: 12px; color: #8B0000; font-size: 14px; font-weight: 500; margin-top: 10px;
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+      color: #8B0000;
+      font-size: 14px;
+      font-weight: 500;
+      margin-top: 10px;
     }
+
     .voucher-meta .mono { font-family: monospace; }
+
     .print-btn {
-      margin-top: 16px; display: inline-flex; align-items: center; gap: 10px; background: var(--gold); color: white; border: none; border-radius: 12px; padding: 13px 18px; cursor: pointer;
-      font-size: 12px; font-weight: 700; letter-spacing: .16em; text-transform: uppercase; box-shadow: var(--shadow-sm);
+      margin-top: 16px;
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      background: var(--gold);
+      color: white;
+      border: none;
+      border-radius: 12px;
+      padding: 13px 18px;
+      cursor: pointer;
+      font-size: 12px;
+      font-weight: 700;
+      letter-spacing: .16em;
+      text-transform: uppercase;
+      box-shadow: var(--shadow-sm);
       transition: .25s ease;
+      min-height: 48px;
     }
-    .print-btn:hover { background: var(--gold-dark); }
+
+    .print-btn:hover,
+    .print-btn:active {
+      background: var(--gold-dark);
+    }
+
     .experience-grid {
-      display: grid; grid-template-columns: 1.05fr .95fr; gap: 60px; align-items: center;
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 34px;
+      align-items: center;
     }
-    .experience h3 { font-size: clamp(40px, 4vw, 58px); line-height: 1.05; margin: 8px 0 18px; font-weight: 300; }
-    .experience-intro { color: #6f665d; line-height: 1.7; }
-    .feature-list { margin-top: 34px; display: grid; gap: 28px; }
-    .feature-item { display: grid; grid-template-columns: 44px 1fr; gap: 16px; }
-    .feature-num { color: var(--gold); font-size: 30px; font-weight: 600; font-family: 'Cormorant Garamond', Georgia, serif; }
+
+    .experience h3 {
+      font-size: clamp(36px, 9vw, 58px);
+      line-height: 1.05;
+      margin: 8px 0 18px;
+      font-weight: 300;
+    }
+
+    .experience-intro {
+      color: #6f665d;
+      line-height: 1.75;
+      font-size: 15px;
+    }
+
+    .feature-list {
+      margin-top: 28px;
+      display: grid;
+      gap: 24px;
+    }
+
+    .feature-item {
+      display: grid;
+      grid-template-columns: 38px 1fr;
+      gap: 14px;
+    }
+
+    .feature-num {
+      color: var(--gold);
+      font-size: 28px;
+      font-weight: 600;
+      font-family: 'Cormorant Garamond', Georgia, serif;
+    }
+
     .feature-item h5 {
-      margin: 0 0 6px; font-size: 13px; letter-spacing: .12em; text-transform: uppercase;
+      margin: 0 0 6px;
+      font-size: 12px;
+      letter-spacing: .12em;
+      text-transform: uppercase;
+      line-height: 1.45;
     }
-    .feature-item p { margin: 0; color: #6f665d; font-size: 14px; line-height: 1.65; }
+
+    .feature-item p {
+      margin: 0;
+      color: #6f665d;
+      font-size: 14px;
+      line-height: 1.65;
+    }
+
     .spa-visual { position: relative; }
+
     .spa-frame {
-      position: absolute; inset: 18px; border: 1px solid var(--gold); transform: translate(12px, 12px); pointer-events: none; z-index: 2;
+      position: absolute;
+      inset: 12px;
+      border: 1px solid var(--gold);
+      transform: translate(10px, 10px);
+      pointer-events: none;
+      z-index: 2;
     }
-    .spa-image-wrap { aspect-ratio: 4 / 5; background: #e8dfd8; overflow: hidden; box-shadow: var(--shadow-lg); position: relative; z-index: 1; }
-    .spa-image-wrap img { width: 100%; height: 100%; object-fit: cover; }
+
+    .spa-image-wrap {
+      aspect-ratio: 4 / 5;
+      background: #e8dfd8;
+      overflow: hidden;
+      box-shadow: var(--shadow-lg);
+      position: relative;
+      z-index: 1;
+      border-radius: 4px;
+    }
+
+    .spa-image-wrap img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+
     footer {
-      padding: 48px 16px 72px; text-align: center; border-top: 1px solid var(--border); color: #a59c92;
-    }
-    footer .love { font-size: 32px; color: var(--text); font-style: italic; }
-    footer .meta { text-transform: uppercase; letter-spacing: .15em; font-size: 10px; margin-top: 10px; }
-    .hidden { display: none !important; }
-
-    @media (max-width: 980px) {
-      .photo-grid { grid-template-columns: repeat(2, 1fr); }
-      .experience-grid { grid-template-columns: 1fr; gap: 38px; }
-      .topbar-inner { flex-direction: column; justify-content: center; padding: 14px 0; }
-      .brand-title { white-space: normal; text-align: center; font-size: 17px; }
+      padding: 40px 16px 86px;
+      text-align: center;
+      border-top: 1px solid var(--border);
+      color: #a59c92;
     }
 
-    @media (max-width: 640px) {
-      section { padding: 68px 0; }
-      .hero { min-height: auto; padding-top: 48px; }
-      .hero-quote { font-size: 24px; }
-      .photo-grid { grid-template-columns: 1fr; gap: 18px; }
-      .letter { padding: 26px 20px; }
-      .voucher-meta { flex-direction: column; }
-      .envelope { padding: 40px 22px; }
-      .audio-btn { width: 100%; justify-content: center; }
+    footer .love {
+      font-size: clamp(24px, 6.8vw, 32px);
+      color: var(--text);
+      font-style: italic;
+      line-height: 1.4;
+    }
+
+    footer .meta {
+      text-transform: uppercase;
+      letter-spacing: .15em;
+      font-size: 10px;
+      margin-top: 12px;
+    }
+
+    @media (min-width: 700px) {
+      section { padding: 88px 0; }
+      .photo-grid { grid-template-columns: repeat(2, 1fr); gap: 22px; }
+      .voucher-meta { flex-direction: row; justify-content: space-between; gap: 12px; }
+      .letter { padding: 34px; }
+    }
+
+    @media (min-width: 980px) {
+      .photo-grid { grid-template-columns: repeat(3, 1fr); gap: 24px; }
+      .experience-grid { grid-template-columns: 1.05fr .95fr; gap: 60px; }
+      .topbar-inner { min-height: 72px; }
+      .brand-title {
+        font-size: 20px;
+        letter-spacing: .14em;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+      }
+      .envelope { padding: 48px 32px; }
+      .hero { padding: 56px 0 90px; }
     }
 
     @media print {
       body * { visibility: hidden !important; background: white !important; }
       #printable-voucher-area, #printable-voucher-area * { visibility: visible !important; }
       #printable-voucher-area {
-        position: absolute; left: 5%; top: 15%; width: 90%; border: 2px solid #E8DFD8 !important; padding: 30px !important;
-        box-shadow: none !important; background: #FAF7F2 !important; border-radius: 12px;
+        position: absolute;
+        left: 5%;
+        top: 15%;
+        width: 90%;
+        border: 2px solid #E8DFD8 !important;
+        padding: 30px !important;
+        box-shadow: none !important;
+        background: #FAF7F2 !important;
+        border-radius: 12px;
       }
       .no-print { display: none !important; }
     }
   </style>
 </head>
 <body>
-  <audio id="bg-audio" src="https://audio.com/andre-feitosa/audio/amor-i-love-you-feat-marisa-monte-ao-vivo" loop></audio>
+  <audio id="bg-audio" preload="auto" loop playsinline>
+    <source src="./Marisa%20Monte%20-%20Amor%20I%20Love%20You.mp3" type="audio/mpeg">
+  </audio>
+
+  <div id="autoplay-tip" class="autoplay-tip hidden">Toque em qualquer lugar para ouvir a trilha</div>
 
   <nav class="topbar no-print">
     <div class="container topbar-inner">
@@ -287,7 +692,7 @@
 
 Eu sei o quanto você fica exausto com seus plantões (fisicamente e emocionalmente). Mesmo assim, você sempre chega em casa e é presente comigo e com o Chiquinho.
 
-Acho que nada seria mais simbólico e significativamente do que te fazer desacelerar e de te presentear com um momento de autocuidado e descanso.
+Acho que nada seria mais simbólico e significativo do que te fazer desacelerar e te presentear com um momento de autocuidado e descanso.
 
 Te amo demais e espero que você aproveite bastante o presente.
 
@@ -320,6 +725,7 @@ Lippinho</div>
           <div class="eyebrow">O que espera por você</div>
           <h3 class="font-serif">Uma jornada completa de reconexão sensorial e calma profunda.</h3>
           <p class="experience-intro">O Mini Day Spa no Buddha Spa foi minuciosamente planejado para oferecer uma experiência de desligamento total do cotidiano. Da entrada à saída, cada momento é focado no bem-estar integral.</p>
+
           <div class="feature-list">
             <div class="feature-item">
               <div class="feature-num">01.</div>
@@ -328,6 +734,7 @@ Lippinho</div>
                 <p>Massagem anti-estresse aplicada com óleos. Terapia realizada em todo o corpo, combinando movimentos de deslizamento, amassamento, rolamento e percussão. *Ou 50 minutos, conforme disponibilidade de cada unidade.</p>
               </div>
             </div>
+
             <div class="feature-item">
               <div class="feature-num">02.</div>
               <div>
@@ -335,6 +742,7 @@ Lippinho</div>
                 <p>O banho de imersão é altamente relaxante e utiliza água na temperatura de 38º a 40º C, preparada com sais de banho e pétalas de rosas. As tinas podem ser de madeira ou de PVC, conforme disponibilidade de cada unidade. Todos os banhos são acompanhados de taça de vinho e castanhas.</p>
               </div>
             </div>
+
             <div class="feature-item">
               <div class="feature-num">03.</div>
               <div>
@@ -344,6 +752,7 @@ Lippinho</div>
             </div>
           </div>
         </div>
+
         <div class="spa-visual">
           <div class="spa-frame"></div>
           <div class="spa-image-wrap">
@@ -360,61 +769,89 @@ Lippinho</div>
   </footer>
 
   <script>
-  const audio = document.getElementById('bg-audio');
-  const audioToggle = document.getElementById('audio-toggle');
-  const audioIcon = audioToggle.querySelector('i');
-  const audioText = audioToggle.querySelector('span');
-  const envelope = document.getElementById('envelope');
-  const letter = document.getElementById('letter');
-  const closeLetter = document.getElementById('close-letter');
-  const printBtn = document.getElementById('print-btn');
-  let isAudioPlaying = false;
+    const audio = document.getElementById('bg-audio');
+    const audioToggle = document.getElementById('audio-toggle');
+    const audioIcon = audioToggle.querySelector('i');
+    const audioText = audioToggle.querySelector('span');
+    const envelope = document.getElementById('envelope');
+    const letter = document.getElementById('letter');
+    const closeLetter = document.getElementById('close-letter');
+    const printBtn = document.getElementById('print-btn');
+    const autoplayTip = document.getElementById('autoplay-tip');
+    let isAudioPlaying = false;
+    let triedAutoplay = false;
 
-  function updateAudioUI() {
-    audioIcon.className = isAudioPlaying ? 'icon-volume-2' : 'icon-volume-x';
-    audioText.textContent = isAudioPlaying ? 'Tocando: Amor I Love You' : 'Ativar Trilha Sonora';
-  }
-
-  async function playAudio() {
-    try {
-      await audio.play();
-      isAudioPlaying = true;
-    } catch (e) {
-      isAudioPlaying = false;
-      console.error('Falha ao tocar áudio:', e);
+    function updateAudioUI() {
+      audioIcon.className = isAudioPlaying ? 'icon-volume-2' : 'icon-volume-x';
+      audioText.textContent = isAudioPlaying ? 'Tocando: Amor I Love You' : 'Ativar Trilha Sonora';
     }
-    updateAudioUI();
-  }
 
-  function pauseAudio() {
-    audio.pause();
-    isAudioPlaying = false;
-    updateAudioUI();
-  }
+    async function playAudio() {
+      try {
+        await audio.play();
+        isAudioPlaying = true;
+        autoplayTip.classList.add('hidden');
+      } catch (e) {
+        isAudioPlaying = false;
+        autoplayTip.classList.remove('hidden');
+        console.error('Falha ao tocar áudio:', e);
+      }
+      updateAudioUI();
+    }
 
-  function toggleAudio() {
-    if (isAudioPlaying) pauseAudio();
-    else playAudio();
-  }
+    function pauseAudio() {
+      audio.pause();
+      isAudioPlaying = false;
+      updateAudioUI();
+    }
 
-  async function openLetter() {
-    envelope.classList.add('hidden');
-    letter.classList.add('open');
-    if (!isAudioPlaying) {
+    function toggleAudio() {
+      if (isAudioPlaying) {
+        pauseAudio();
+      } else {
+        playAudio();
+      }
+    }
+
+    async function tryAutoplay() {
+      if (triedAutoplay) return;
+      triedAutoplay = true;
       await playAudio();
     }
-  }
 
-  function closeLetterFn() {
-    letter.classList.remove('open');
-    envelope.classList.remove('hidden');
-  }
+    async function unlockAudioOnce() {
+      if (!isAudioPlaying) {
+        await playAudio();
+      }
+      document.removeEventListener('click', unlockAudioOnce);
+      document.removeEventListener('touchstart', unlockAudioOnce);
+      document.removeEventListener('keydown', unlockAudioOnce);
+    }
 
-  audioToggle.addEventListener('click', toggleAudio);
-  envelope.addEventListener('click', openLetter);
-  closeLetter.addEventListener('click', closeLetterFn);
-  printBtn.addEventListener('click', () => window.print());
-  updateAudioUI();
-</script>
+    async function openLetter() {
+      envelope.classList.add('hidden');
+      letter.classList.add('open');
+      if (!isAudioPlaying) {
+        await playAudio();
+      }
+    }
+
+    function closeLetterFn() {
+      letter.classList.remove('open');
+      envelope.classList.remove('hidden');
+    }
+
+    audioToggle.addEventListener('click', toggleAudio);
+    envelope.addEventListener('click', openLetter);
+    closeLetter.addEventListener('click', closeLetterFn);
+    printBtn.addEventListener('click', () => window.print());
+
+    window.addEventListener('load', tryAutoplay);
+    document.addEventListener('click', unlockAudioOnce, { passive: true });
+    document.addEventListener('touchstart', unlockAudioOnce, { passive: true });
+    document.addEventListener('keydown', unlockAudioOnce);
+
+    updateAudioUI();
+  </script>
 </body>
 </html>
