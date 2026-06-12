@@ -360,68 +360,61 @@ Lippinho</div>
   </footer>
 
   <script>
-    const audio = document.getElementById('bg-audio');
-    const audioToggle = document.getElementById('audio-toggle');
-    const audioIcon = audioToggle.querySelector('i');
-    const audioText = audioToggle.querySelector('span');
-    const envelope = document.getElementById('envelope');
-    const letter = document.getElementById('letter');
-    const closeLetter = document.getElementById('close-letter');
-    const printBtn = document.getElementById('print-btn');
-    let isAudioPlaying = false;
-    let firstInteractionDone = false;
+  const audio = document.getElementById('bg-audio');
+  const audioToggle = document.getElementById('audio-toggle');
+  const audioIcon = audioToggle.querySelector('i');
+  const audioText = audioToggle.querySelector('span');
+  const envelope = document.getElementById('envelope');
+  const letter = document.getElementById('letter');
+  const closeLetter = document.getElementById('close-letter');
+  const printBtn = document.getElementById('print-btn');
+  let isAudioPlaying = false;
 
-    function updateAudioUI() {
-      audioIcon.className = isAudioPlaying ? 'icon-volume-2' : 'icon-volume-x';
-      audioText.textContent = isAudioPlaying ? 'Tocando: Amor I Love You' : 'Ativar Trilha Sonora';
-    }
+  function updateAudioUI() {
+    audioIcon.className = isAudioPlaying ? 'icon-volume-2' : 'icon-volume-x';
+    audioText.textContent = isAudioPlaying ? 'Tocando: Amor I Love You' : 'Ativar Trilha Sonora';
+  }
 
-    async function playAudio() {
-      try {
-        await audio.play();
-        isAudioPlaying = true;
-      } catch (e) {
-        isAudioPlaying = false;
-      }
-      updateAudioUI();
-    }
-
-    function pauseAudio() {
-      audio.pause();
+  async function playAudio() {
+    try {
+      await audio.play();
+      isAudioPlaying = true;
+    } catch (e) {
       isAudioPlaying = false;
-      updateAudioUI();
+      console.error('Falha ao tocar áudio:', e);
     }
-
-    function toggleAudio() {
-      if (isAudioPlaying) pauseAudio(); else playAudio();
-    }
-
-    function openLetter() {
-      envelope.classList.add('hidden');
-      letter.classList.add('open');
-    }
-
-    function closeLetterFn() {
-      letter.classList.remove('open');
-      envelope.classList.remove('hidden');
-    }
-
-    function handleFirstInteraction() {
-      if (!firstInteractionDone) {
-        firstInteractionDone = true;
-        playAudio();
-      }
-      window.removeEventListener('click', handleFirstInteraction);
-      window.removeEventListener('touchstart', handleFirstInteraction);
-    }
-
-    audioToggle.addEventListener('click', toggleAudio);
-    envelope.addEventListener('click', openLetter);
-    closeLetter.addEventListener('click', closeLetterFn);
-    printBtn.addEventListener('click', () => window.print());
-    window.addEventListener('click', handleFirstInteraction, { once: true });
-    window.addEventListener('touchstart', handleFirstInteraction, { once: true });
     updateAudioUI();
-  </script>
+  }
+
+  function pauseAudio() {
+    audio.pause();
+    isAudioPlaying = false;
+    updateAudioUI();
+  }
+
+  function toggleAudio() {
+    if (isAudioPlaying) pauseAudio();
+    else playAudio();
+  }
+
+  async function openLetter() {
+    envelope.classList.add('hidden');
+    letter.classList.add('open');
+    if (!isAudioPlaying) {
+      await playAudio();
+    }
+  }
+
+  function closeLetterFn() {
+    letter.classList.remove('open');
+    envelope.classList.remove('hidden');
+  }
+
+  audioToggle.addEventListener('click', toggleAudio);
+  envelope.addEventListener('click', openLetter);
+  closeLetter.addEventListener('click', closeLetterFn);
+  printBtn.addEventListener('click', () => window.print());
+  updateAudioUI();
+</script>
 </body>
 </html>
